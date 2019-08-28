@@ -22,13 +22,14 @@ con.connect(function(err) {
         console.log("ERROR!!! Check connection"+ err);
     }
 
-    console.log("Connected\n");
-    buyProducts();
-
+    //console.log("Connected\n");
+    displayProducts();   
 });
 
+
+
 function displayProducts() {
-    var query = "SELECT item_id, product_name, price FROM products"
+    var query = "SELECT item_id, product_name, price, stock_quantity FROM products"
     con.query(query, function(err, res) {
         if (err) {
             console.log("ERROR from display products: "+err);
@@ -37,10 +38,16 @@ function displayProducts() {
         for (var i=0;i<res.length;i++) {
             console.log(res[i].item_id + " | " + res[i].product_name+ " | $" + res[i].price);
         }
+        console.log("\n")
+        buyProducts();
     })
+    
 }
 
+
+
 function buyProducts() {
+
     inquirer.prompt([
         {
             name: "id",
@@ -68,7 +75,7 @@ function buyProducts() {
            //console.log(res);
   
              if (res[0].stock_quantity < reqUnits) {
-                console.log("Sorry, Insufficient quantity");
+                console.log("Sorry, Insufficient quantity!");
             }
      
             if(res[0].stock_quantity >= reqUnits) 
@@ -78,7 +85,7 @@ function buyProducts() {
                 updateQuantity(newQuantity, reqId);
                  
                 totalPrice = res[0].price * reqUnits;
-                console.log("\nTotal Price of purchase is: "+totalPrice)
+                console.log("\nTotal Price of purchase is: $"+totalPrice.toFixed(2));
             }   
             
        });
@@ -101,8 +108,7 @@ function updateQuantity(units, id) {
             if (err) {
                 console.log("ERROR on updating quantity: "+err);
             }
-            //console.log("quantity updated!\n");
+            
         });
 }
-//displayProducts();
 
