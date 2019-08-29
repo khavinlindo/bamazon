@@ -23,7 +23,7 @@ con.connect(function(err) {
         console.log("ERROR!!! Check connection"+ err);
     }
 
-    console.log("Connected\n");
+    console.log("\n");
     options();
 });
 
@@ -54,13 +54,21 @@ function viewLowInventory() {
         console.log("\n")
           var lowInventory = false;
         
+          var items = [];
           for (var i=0;i<res.length;i++) {
             if (res[i].stock_quantity < 5) {
-                console.log(res[i].product_name);
+                items.push(res[i].product_name);
                 lowInventory = true;
             }    
         }
  
+        if (lowInventory) {
+            console.log("These are the items with low inventory: ")
+            for (i=0;i<items.length;i++) {
+                console.log(items[i]);
+            }
+        }
+
         if(!lowInventory) {
             console.log("All products are fully stocked!!!");
         }
@@ -72,7 +80,7 @@ function addMore() {
        {
            name: "id",
            type: "input",
-           message: "What item would you like to add to inventory. Please provide item ID"
+           message: "What item would you like to add to inventory? Please provide item ID: "
        },
        {
            name: "amount",
@@ -138,7 +146,7 @@ function addNewProduct() {
       {
           name: "stock",
           type: "input",
-          message: "How much will be available?"
+          message: "How many will be available?"
       }
   ]).then(function(res) {
       var query = "INSERT INTO products SET ?"
@@ -158,7 +166,7 @@ function addNewProduct() {
              }
       });
 
-      console.log(res.name+" has been added to inventory!");
+      console.log("\n"+res.name+" has been added to inventory!");
   });
 }
 

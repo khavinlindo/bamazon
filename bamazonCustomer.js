@@ -35,6 +35,7 @@ function displayProducts() {
             console.log("ERROR from display products: "+err);
         }
 
+        console.log("\n")
         for (var i=0;i<res.length;i++) {
             console.log(res[i].item_id + " | " + res[i].product_name+ " | $" + res[i].price);
         }
@@ -75,6 +76,7 @@ function buyProducts() {
            //console.log(res);
   
              if (res[0].stock_quantity < reqUnits) {
+                 console.log("\n")
                 console.log("Sorry, Insufficient quantity!");
             }
      
